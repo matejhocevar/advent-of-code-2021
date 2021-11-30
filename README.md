@@ -8,8 +8,10 @@
 ![last-commit](https://img.shields.io/github/last-commit/matejhocevar/advent-of-code-2021?style=plastic)
 
 **Official AoC site:** [https://adventofcode.com](https://adventofcode.com)
-**Author**: [Matej Hočevar](https://www.github.com/matejhocevar)
 
+**Dart AoT template**: [Jacob Bang](https://github.com/julemand101/AdventOfCode2021)
+
+**Author**: [Matej Hočevar](https://www.github.com/matejhocevar)
 
 ## Running locally
 

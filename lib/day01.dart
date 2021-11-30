@@ -2,10 +2,10 @@
 // https://adventofcode.com/2020/day/1
 
 int solveA(Iterable<String> input) {
-  final list = input.map(int.parse).toList(growable: false);
+  final List<int> list = input.map(int.parse).toList(growable: false);
 
-  for (var a = 0; a < list.length; a++) {
-    for (var b = a + 1; b < list.length; b++) {
+  for (int a = 0; a < list.length; a++) {
+    for (int b = a + 1; b < list.length; b++) {
       if (list[a] + list[b] == 2020) {
         return list[a] * list[b];
       }
@@ -16,11 +16,11 @@ int solveA(Iterable<String> input) {
 }
 
 int solveB(Iterable<String> input) {
-  final list = input.map(int.parse).toList(growable: false);
+  final List<int> list = input.map(int.parse).toList(growable: false);
 
-  for (var a = 0; a < list.length; a++) {
-    for (var b = a + 1; b < list.length; b++) {
-      for (var c = b + 1; c < list.length; c++) {
+  for (int a = 0; a < list.length; a++) {
+    for (int b = a + 1; b < list.length; b++) {
+      for (int c = b + 1; c < list.length; c++) {
         if (list[a] + list[b] + list[c] == 2020) {
           return list[a] * list[b] * list[c];
         }
