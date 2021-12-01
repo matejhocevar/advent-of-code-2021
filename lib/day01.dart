@@ -1,32 +1,38 @@
-// --- Day 1: Report Repair ---
-// https://adventofcode.com/2020/day/1
+// --- Day 1: Sonar Sweep ---
+// https://adventofcode.com/2021/day/1
+
+import 'package:collection/collection.dart';
 
 int solveA(Iterable<String> input) {
   final List<int> list = input.map(int.parse).toList(growable: false);
 
-  for (int a = 0; a < list.length; a++) {
-    for (int b = a + 1; b < list.length; b++) {
-      if (list[a] + list[b] == 2020) {
-        return list[a] * list[b];
-      }
+  int larger = 0;
+  for (int a = 1; a < list.length; a++) {
+    if (list[a] > list[a - 1]) {
+      larger++;
     }
   }
-
-  throw Exception('No solution found!');
+  return larger;
 }
 
 int solveB(Iterable<String> input) {
   final List<int> list = input.map(int.parse).toList(growable: false);
 
-  for (int a = 0; a < list.length; a++) {
-    for (int b = a + 1; b < list.length; b++) {
-      for (int c = b + 1; c < list.length; c++) {
-        if (list[a] + list[b] + list[c] == 2020) {
-          return list[a] * list[b] * list[c];
-        }
-      }
+  int larger = 0;
+  for (int a = 3; a < list.length; a++) {
+    // final int a0 = list[a];
+    // final int a1 = list[a - 1];
+    // final int a2 = list[a - 2];
+    // final int a3 = list[a - 3];
+
+    // final int windowA = a0 + a1 + a2;
+    // final int windowB = a1 + a2 + a3;
+
+    final int windowA = list.skip(a - 2).take(3).sum;
+    final int windowB = list.skip(a - 3).take(3).sum;
+    if (windowA > windowB) {
+      larger++;
     }
   }
-
-  throw Exception('No solution found!');
+  return larger;
 }
