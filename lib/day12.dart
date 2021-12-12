@@ -1,6 +1,8 @@
 // --- Day 12: Passage Pathing ---
 // https://adventofcode.com/2021/day/12
 
+// ignore_for_file: avoid_equals_and_hash_code_on_mutable_classes
+
 enum SearchPath { part1, part2 }
 
 class Graph {
@@ -71,12 +73,11 @@ class Node {
   final bool isStart;
   final bool isEnd;
 
-  @override
   bool equals(Node other) => name == other.name;
 
   @override
   bool operator ==(Object other) {
-    return name == (other as Node).name;
+    return other is Node && name == other.name;
   }
 
   @override
