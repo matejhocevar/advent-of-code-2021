@@ -1,70 +1,97 @@
-// --- Day 3: Binary Diagnostic ---
-// https://adventofcode.com/2021/day/3
+// --- Day 13: Transparent Origami ---
+// https://adventofcode.com/2021/day/13
+
+import 'dart:math' as math;
+
+enum Part { part1, part2 }
 
 int solveA(Iterable<String> input) {
   final List<String> rawInput = input.toList(growable: false);
-  final List<List<int>> list = rawInput.map((String s) => s.split('').map(int.parse).toList()).toList();
-
-  final List<int> values = List<int>.generate(list[0].length, (_) => 0);
-  for (int a = 0; a < list.length; a++) {
-    for (int b = 0; b < list[a].length; b++) {
-      values[b] += list[a][b];
-    }
-  }
-
-  final List<int> gammaList = <int>[...values];
-  final List<int> epsList = <int>[...values];
-  for (int a = 0; a < values.length; a++) {
-    gammaList[a] = values[a] / list.length > 0.5 ? 1 : 0;
-    epsList[a] = values[a] / list.length > 0.5 ? 0 : 1;
-  }
-
-  final int gamma = convertBinaryListToInt(gammaList);
-  final int eps = convertBinaryListToInt(epsList);
-  return gamma * eps;
+  return foldPaper(rawInput);
 }
 
 int solveB(Iterable<String> input) {
   final List<String> rawInput = input.toList(growable: false);
-  final List<List<int>> list = rawInput.map((String s) => s.split('').map(int.parse).toList()).toList();
-
-  final int oxygen = calculateLifeSupportRating(list: list, criteria: BitCriteria.high);
-  final int co2 = calculateLifeSupportRating(list: list, criteria: BitCriteria.low);
-
-  return oxygen * co2;
+  return foldPaper(rawInput, part: Part.part2);
 }
 
-// Helpers
+int foldPaper(List<String> rawInput, {Part part = Part.part1}) {
+  const int size = 2000;
+  final List<List<String>> paper =
+      List<List<String>>.generate(size, (_) => List<String>.filled(size, '.', growable: true), growable: true);
 
-enum BitCriteria {
-  low,
-  high,
-}
-
-int calculateLifeSupportRating({required List<List<int>> list, required BitCriteria criteria}) {
-  final List<List<int>> candidates = <List<int>>[...list];
-  int pos = 0;
-
-  while (candidates.length > 1 && pos < list[0].length) {
-    int sum = 0;
-    for (int a = 0; a < candidates.length; a++) {
-      sum += candidates[a][pos];
-    }
-    int bit;
-
-    if (criteria == BitCriteria.high) {
-      bit = sum / candidates.length >= 0.5 ? 1 : 0;
-    } else {
-      bit = sum / candidates.length >= 0.5 ? 0 : 1;
+  int maxX = 0;
+  int maxY = 0;
+  for (final String s in rawInput) {
+    if (!s.startsWith('fold') && s.isNotEmpty) {
+      final int x = int.parse(s.split(',')[0]);
+      final int y = int.parse(s.split(',')[1]);
+      maxX = math.max(maxX, x);
+      maxY = math.max(maxY, y);
+      paper[y][x] = '#';
     }
 
-    candidates.removeWhere((List<int> l) => l[pos] != bit);
-    pos++;
+    if (s.isEmpty) {
+      paper.length = maxY + 1;
+      for (int a = 0; a < paper.length; a++) {
+        paper[a].length = maxX + 1;
+      }
+    }
+
+    if (s.startsWith('fold along x')) {
+      final int x = int.parse(s.split('=')[1]);
+      for (int a = 0; a < paper.length; a++) {
+        final List<String> right = paper[a].reversed.toList();
+        paper[a] = mergeLines(paper[a], right);
+        paper[a].length = x;
+      }
+
+      if (part == Part.part1) {
+        return sumDots(paper);
+      }
+    }
+
+    if (s.startsWith('fold along y')) {
+      final int y = int.parse(s.split('=')[1]);
+      final List<List<String>> bottom = paper.skip(y).toList().reversed.toList();
+      for (int a = 0; a < bottom.length; a++) {
+        paper[a] = mergeLines(paper[a], bottom[a]);
+      }
+      paper.length = y;
+
+      if (part == Part.part1) {
+        return sumDots(paper);
+      }
+    }
   }
 
-  return convertBinaryListToInt(candidates.first);
+  displayPaper(paper);
+  return 0;
 }
 
-int convertBinaryListToInt(List<int> list) {
-  return int.parse(list.map((int x) => x.toString()).toList().join(), radix: 2);
+List<String> mergeLines(List<String> a, List<String> b) {
+  for (int i = 0; i < a.length; i++) {
+    if (a[i] == '#' || b[i] == '#') {
+      a[i] = '#';
+    }
+  }
+  return a;
+}
+
+int sumDots(List<List<String>> paper) {
+  int sum = 0;
+  for (int a = 0; a < paper.length; a++) {
+    for (int b = 0; b < paper[a].length; b++) {
+      if (paper[a][b] == '#') {
+        sum++;
+      }
+    }
+  }
+  return sum;
+}
+
+void displayPaper(List<List<String>> paper) {
+  for (int a = 0; a < paper.length; a++) {
+    print(paper[a].join(''));
+  }
 }

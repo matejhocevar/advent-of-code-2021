@@ -1,5 +1,5 @@
-// --- Day 3: Binary Diagnostic ---
-// https://adventofcode.com/2021/day/3
+// --- Day 13: Transparent Origami ---
+// https://adventofcode.com/2021/day/13
 
 import 'dart:io';
 
@@ -13,25 +13,34 @@ void main() {
     test('Example 1', () {
       expect(
         solveA(const <String>[
-          '00100',
-          '11110',
-          '10110',
-          '10111',
-          '10101',
-          '01111',
-          '00111',
-          '11100',
-          '10000',
-          '11001',
-          '00010',
-          '01010',
+          '6,10',
+          '0,14',
+          '9,10',
+          '0,3',
+          '10,4',
+          '4,11',
+          '6,0',
+          '6,12',
+          '4,1',
+          '0,13',
+          '10,12',
+          '3,4',
+          '3,0',
+          '8,4',
+          '1,10',
+          '2,14',
+          '8,10',
+          '9,0',
+          '',
+          'fold along y=7',
+          'fold along x=5',
         ]),
-        equals(198),
+        equals(17),
       );
     });
 
     test('Solution', () {
-      expect(solveA(input), equals(4006064));
+      expect(solveA(input), equals(720));
     });
   });
 
@@ -39,25 +48,34 @@ void main() {
     test('Example 1', () {
       expect(
         solveB(const <String>[
-          '00100',
-          '11110',
-          '10110',
-          '10111',
-          '10101',
-          '01111',
-          '00111',
-          '11100',
-          '10000',
-          '11001',
-          '00010',
-          '01010',
+          '6,10',
+          '0,14',
+          '9,10',
+          '0,3',
+          '10,4',
+          '4,11',
+          '6,0',
+          '6,12',
+          '4,1',
+          '0,13',
+          '10,12',
+          '3,4',
+          '3,0',
+          '8,4',
+          '1,10',
+          '2,14',
+          '8,10',
+          '9,0',
+          '',
+          'fold along y=7',
+          'fold along x=5',
         ]),
-        equals(230),
+        equals(0),
       );
     });
 
     test('Solution', () {
-      expect(solveB(input), equals(5941884));
+      expect(solveB(input), equals(0));
     });
   });
 }
